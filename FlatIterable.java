@@ -1,4 +1,4 @@
-package hu.bleki.math.util;
+package hu.bleki.util;
 
 import java.util.Iterator;
 import java.util.function.Function;
