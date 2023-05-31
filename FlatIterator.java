@@ -5,35 +5,35 @@ import java.util.Iterator;
 import java.util.function.Function;
 
 public class FlatIterator<U, V> implements Iterator<V> {
-    private final Iterator<U> uIterator;
-    private final Function<U, Iterator<V>> iteratorFunction;
-    private Iterator<V> vIterator = Collections.emptyIterator();
+    private final Iterator<U> iterator;
+    private final Function<U, Iterator<V>> flatter;
+    private Iterator<V> flatIterator = Collections.emptyIterator();
 
-    public FlatIterator(Iterator<U> iterator, Function<U, Iterator<V>> iteratorFunction) {
-        this.uIterator = iterator;
-        this.iteratorFunction = iteratorFunction;
+    public FlatIterator(Iterator<U> iterator, Function<U, Iterator<V>> flatter) {
+        this.iterator = iterator;
+        this.flatter = flatter;
 
         goNext();
     }
 
     @Override
     public boolean hasNext() {
-        return vIterator.hasNext();
+        return flatIterator.hasNext();
     }
 
     @Override
     public V next() {
-        V v = vIterator.next();
+        V flatNext = flatIterator.next();
         goNext();
-        return v;
+        return flatNext;
     }
 
     private void goNext() {
-        if (!vIterator.hasNext()) {
-            while (uIterator.hasNext()) {
-                U u = uIterator.next();
-                vIterator = iteratorFunction.apply(u);
-                if (vIterator.hasNext()) {
+        if (!flatIterator.hasNext()) {
+            while (iterator.hasNext()) {
+                U next = iterator.next();
+                flatIterator = flatter.apply(next);
+                if (flatIterator.hasNext()) {
                     return;
                 }
             }
