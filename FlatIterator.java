@@ -1,4 +1,4 @@
-package hu.bleki.math.util;
+package hu.bleki.util;
 
 import java.util.Collections;
 import java.util.Iterator;
